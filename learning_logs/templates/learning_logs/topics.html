@@ -1,13 +1,20 @@
 {% extends 'learning_logs/base.html' %}
 
 {% block content %}
-    <h2>Topics:</h2>
-    <a href="{% url 'learning_logs:new_topic' %}">add a new topic</a>
+    <h2 class="text-center">Topics</h2>
+    <a href="{% url 'learning_logs:new_topic' %}" class="btn btn-outline-success my-3 ms-4" type="button">add a new topic</a>
     <ol>
-        {% for topic in topics %}
-            <li>
-                <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
-            </li>
-        {% endfor %}
+        
+            <div class="d-flex flex-row mb-3">
+            {% for topic in topics %}
+                <div class="card mx-3" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></h5>
+                        <p class="card-text">{{ topic.date_added }}</p>
+                        <a href="{% url 'learning_logs:delete_topic' topic.id %}" class="text-danger">Delete Topic</a>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
     </ol>
 {% endblock content %}

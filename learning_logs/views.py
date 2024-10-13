@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-
 from .forms import TopicForm, EntryForm
 from .models import Topic, Entry
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -9,13 +9,14 @@ def index(request):
     return render(request, 'learning_logs/index.html')
 
 
+@login_required
 def topics(request):
     """ show all topics """
     topics = Topic.objects.all()
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
 
-
+@login_required
 def topic(request, topic_id):
     """show a topic and all its entries"""
     topic = Topic.objects.get(id=topic_id)
@@ -23,7 +24,7 @@ def topic(request, topic_id):
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_logs/topic.html', context)
 
-
+@login_required
 def new_topic(request):
     """add a new topic"""
     if request.method != "POST":
@@ -36,7 +37,7 @@ def new_topic(request):
     context = {'form': form}
     return render(request, 'learning_logs/new_topic.html', context)
 
-
+@login_required
 def new_entry(request, topic_id):
     topic = Topic.objects.get(id=topic_id)
 
@@ -54,7 +55,7 @@ def new_entry(request, topic_id):
 
     return render(request, 'learning_logs/new_entry.html', context)
 
-
+@login_required
 def edit_entry(request, entry_id):
     entry = Entry.objects.get(id=entry_id)
 
@@ -66,4 +67,19 @@ def edit_entry(request, entry_id):
             form.save()
             return redirect('learning_logs:topic', topic_id=entry.topic.id)
     context = {'entry': entry, 'form': form}
-    return render(request, 'learning_logs/edit_entry.html', context)
+    return render(request, 'learning_logs/edit_entry.html', context),
+
+@login_required
+def delete_entry(request, entry_id):
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    entry.delete()
+
+    return redirect('learning_logs:topic', topic_id=topic.id)
+
+@login_required
+def delete_topic(request, topic_id):
+    topic = Topic.objects.get(id=topic_id)
+    topic.delete()
+
+    return redirect('learning_logs:topics')

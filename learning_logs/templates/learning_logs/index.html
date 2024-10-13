@@ -7,8 +7,17 @@
 <body>
     {% extends 'learning_logs/base.html' %}
     {% block content %}
-        <h1>Learning log</h1>
-        <p>learning lof asdas asdasd sdsad sad sad asdsadsa sad sad sad asd sad asd sad</p>
+    <h1 class="text-center">Learning log</h1>
+    <div class="container py-4">
+        <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Track Your Learning Progress</h1>
+                <p class="col-md-8 fs-4">Create your own personalized learning log. Keep track of the topics you're learning about.
+                Whenever discover something new, log it to summarize what you've learned and track your progress.</p>
+                    <a href="{% url 'users:register' %}" class="btn btn-primary btn-lg">Get Started</a>
+            </div>
+        </div>
+    </div>
     {% endblock content %}
 </body>
 </html>
